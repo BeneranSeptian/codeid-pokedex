@@ -43,6 +43,7 @@ fun Project.baseDependencies() {
         implementation(libs.androidx.core.ktx)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.timber)
+        implementation(libs.kotlin.reflect)
     }
 }
 
@@ -91,5 +92,6 @@ fun Project.localStorageDependencies() {
 //        implementation(libs.room.ktx)
 //        ksp(libs.room.compiler)
         implementation(libs.datastore.preferences)
+        implementation(libs.couchbase.lite.android)
     }
 }

@@ -25,4 +25,6 @@
     <string name="register_login_now">Login now</string>
     <string name="error_password_mismatch">Passwords do not match</string>
     <string name="error_empty_name">Name cannot be empty</string>
+    <string name="error_email_already_registered">Email is already registered</string>
+    <string name="error_invalid_credentials">Invalid email or password</string>
 </resources>

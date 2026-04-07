@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.septianbeneran.technicaltest.api.data.local.cache.AuthCache
+import dev.septianbeneran.technicaltest.api.data.local.cache.AuthCacheImpl
 import dev.septianbeneran.technicaltest.api.data.local.cache.JsonBinCache
 import dev.septianbeneran.technicaltest.api.data.local.cache.JsonBinCacheImpl
 import dev.septianbeneran.technicaltest.api.data.local.service.JsonBinCacheDataSource
@@ -54,4 +56,10 @@ abstract class DataModule {
     abstract fun bindJsonBinCacheDataSource(
         jsonBinCacheDataSourceImpl: JsonBinCacheDataSourceImpl
     ): JsonBinCacheDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthCache(
+        authCacheImpl: AuthCacheImpl
+    ): AuthCache
 }

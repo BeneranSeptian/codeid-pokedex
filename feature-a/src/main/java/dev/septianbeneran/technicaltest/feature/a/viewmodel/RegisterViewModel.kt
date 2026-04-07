@@ -1,7 +1,9 @@
 package dev.septianbeneran.technicaltest.feature.a.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.septianbeneran.technicaltest.api.usecase.RegisterUserUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
+import dev.septianbeneran.technicaltest.core.entity.model.User
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.a.R
@@ -12,8 +14,9 @@ import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterActi
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnNameChange
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnPasswordChange
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnRegisterClick
-import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.NavigateToHome
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.NavigateToLogin
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.ShowToast
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,7 +24,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : BaseViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val registerUserUseCase: RegisterUserUseCase
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -73,7 +78,20 @@ class RegisterViewModel @Inject constructor() : BaseViewModel() {
             }
 
             is OnRegisterClick -> {
-                // TODO: Implement register logic
+                val user = User(
+                    name = uiState.value.name,
+                    email = uiState.value.email,
+                    password = uiState.value.password
+                )
+
+                if (uiState.value.isRegisterEnabled) {
+                    val isSuccess = registerUserUseCase(user)
+                    if (isSuccess) {
+                        sendEvent(NavigateToHome)
+                    } else {
+                        sendEvent(ShowToast(R.string.error_email_already_registered))
+                    }
+                }
             }
 
             is OnLoginClick -> {

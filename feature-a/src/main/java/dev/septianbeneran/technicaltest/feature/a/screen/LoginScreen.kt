@@ -1,5 +1,7 @@
 package dev.septianbeneran.technicaltest.feature.a.screen
 
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
+import dev.septianbeneran.technicaltest.core.navigation.route.ItemListRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeButton
 import dev.septianbeneran.technicaltest.core.ui.component.PokeMediaPlaceHolder
@@ -35,13 +40,13 @@ import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.feature.a.R
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnEmailChange
-import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnForgotPasswordClick
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnLoginClick
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnPasswordChange
-import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnRegisterClick
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.NavigateToForgotPassword
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.NavigateToHome
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.NavigateToRegister
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.ShowToast
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginUiState
 import dev.septianbeneran.technicaltest.feature.a.viewmodel.LoginViewModel
 
@@ -49,6 +54,7 @@ import dev.septianbeneran.technicaltest.feature.a.viewmodel.LoginViewModel
 fun LoginScreenRoute(
     navigator: Navigator
 ) {
+    val context = LocalContext.current
     val viewModel: LoginViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -73,6 +79,18 @@ fun LoginScreenRoute(
 
             is NavigateToRegister -> {
                 navigator.navigate(RegisterRoute)
+            }
+
+            is NavigateToHome -> {
+                navigator.navigate(
+                    route = ItemListRoute,
+                    popUpTo = LoginRoute,
+                    inclusive = true
+                )
+            }
+
+            is ShowToast -> {
+                Toast.makeText(context, event.message, LENGTH_SHORT).show()
             }
         }
     }

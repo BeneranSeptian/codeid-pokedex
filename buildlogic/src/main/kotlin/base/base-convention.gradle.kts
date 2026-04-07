@@ -2,6 +2,7 @@ package base
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
+import gradle.kotlin.dsl.accessors._1a8cfdda1d7370eb30824f37e6cd59c1.kotlin
 import util.AppConfig
 import util.baseDependencies
 
@@ -67,6 +68,14 @@ pluginManager.withPlugin("com.android.library") {
                 isReturnDefaultValues = true
             }
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        freeCompilerArgs.add(
+            "-Xannotation-default-target=param-property"
+        )
     }
 }
 

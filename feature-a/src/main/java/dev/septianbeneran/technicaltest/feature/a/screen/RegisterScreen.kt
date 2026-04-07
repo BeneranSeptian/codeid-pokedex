@@ -1,5 +1,6 @@
 package dev.septianbeneran.technicaltest.feature.a.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
+import dev.septianbeneran.technicaltest.core.navigation.route.ItemListRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.component.PokeButton
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextField
@@ -34,7 +39,10 @@ import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterActi
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnNameChange
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnPasswordChange
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterAction.OnRegisterClick
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.NavigateToHome
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.NavigateToLogin
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterEvent.ShowToast
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.RegisterUiState
 import dev.septianbeneran.technicaltest.feature.a.viewmodel.RegisterViewModel
 
@@ -42,6 +50,7 @@ import dev.septianbeneran.technicaltest.feature.a.viewmodel.RegisterViewModel
 fun RegisterScreenRoute(
     navigator: Navigator
 ) {
+    val context = LocalContext.current
     val viewModel: RegisterViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -55,9 +64,19 @@ fun RegisterScreenRoute(
         )
     }
 
+
     EventObserver(event = viewModel.event) { event ->
         when (event) {
             NavigateToLogin -> navigator.navigateUp()
+            NavigateToHome -> navigator.navigate(
+                route = ItemListRoute,
+                popUpTo = LoginRoute,
+                inclusive = true
+            )
+
+            is ShowToast -> {
+                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

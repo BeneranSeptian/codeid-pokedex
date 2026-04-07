@@ -26,4 +26,6 @@ sealed interface RegisterAction {
 
 sealed interface RegisterEvent : BaseEvent {
     data object NavigateToLogin : RegisterEvent
+    data object NavigateToHome : RegisterEvent
+    data class ShowToast(@StringRes val message: Int) : RegisterEvent
 }

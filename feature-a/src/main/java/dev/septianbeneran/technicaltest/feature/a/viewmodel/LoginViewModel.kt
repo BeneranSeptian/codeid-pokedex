@@ -1,16 +1,17 @@
 package dev.septianbeneran.technicaltest.feature.a.viewmodel
 
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.septianbeneran.technicaltest.api.usecase.LoginUserUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.a.R
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnEmailChange
-import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnForgotPasswordClick
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnLoginClick
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnPasswordChange
-import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginAction.OnRegisterClick
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.NavigateToHome
+import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginEvent.ShowToast
 import dev.septianbeneran.technicaltest.feature.a.screen.properties.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,9 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor() : BaseViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUserUseCase: LoginUserUseCase
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -49,20 +52,12 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
             }
 
             is OnLoginClick -> {
-                val isEmailValid = validateEmail(action.email)
-                val isPasswordValid = validatePassword(action.password)
-
-                if (isEmailValid && isPasswordValid) {
-                    // TODO: Implement login logic
+                val isSuccess = loginUserUseCase(action.email, action.password)
+                if (isSuccess) {
+                    sendEvent(NavigateToHome)
+                } else {
+                    sendEvent(ShowToast(R.string.error_invalid_credentials))
                 }
-            }
-
-            is OnForgotPasswordClick -> {
-                // TODO: Navigate to ForgotPassword screen
-            }
-
-            is OnRegisterClick -> {
-
             }
         }
     }
