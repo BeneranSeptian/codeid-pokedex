@@ -12,47 +12,30 @@ inline fun <reified T : Any> T.toDocument(
 
     val doc = MutableDocument(documentId)
 
-    val properties =
-        T::class.memberProperties
+    val properties = T::class.memberProperties
 
     properties.forEach { prop ->
-
         val name = prop.name
-
-        val value =
-            prop.get(this)
-
-        when (value) {
-
+        when (val value = prop.get(this)) {
             is String ->
                 doc.setString(name, value)
 
-            is Int ->
-                doc.setInt(name, value)
+            is Int -> doc.setInt(name, value)
 
-            is Boolean ->
-                doc.setBoolean(name, value)
+            is Boolean -> doc.setBoolean(name, value)
 
-            is Long ->
-                doc.setLong(name, value)
+            is Long -> doc.setLong(name, value)
 
-            is Float ->
-                doc.setFloat(name, value)
+            is Float -> doc.setFloat(name, value)
 
-            is Double ->
-                doc.setDouble(name, value)
+            is Double -> doc.setDouble(name, value)
 
             null -> {}
 
             else -> {
-                doc.setString(
-                    name,
-                    value.toJson()
-                )
+                doc.setString(name, value.toJson())
             }
-
         }
-
     }
 
     return doc
@@ -64,38 +47,31 @@ inline fun <reified T : Any> Document.toObject(): T? {
         T::class.primaryConstructor
             ?: return null
 
-    val args =
-        constructor.parameters.associateWith { param ->
+    val args = constructor.parameters.associateWith { param ->
 
-            val name = param.name ?: return@associateWith null
+        val name = param.name ?: return@associateWith null
 
-            when (param.type.classifier) {
+        when (param.type.classifier) {
 
-                String::class ->
-                    getString(name)
+            String::class -> getString(name)
 
-                Int::class ->
-                    getInt(name)
+            Int::class -> getInt(name)
 
-                Boolean::class ->
-                    getBoolean(name)
+            Boolean::class -> getBoolean(name)
 
-                Long::class ->
-                    getLong(name)
+            Long::class -> getLong(name)
 
-                Float::class ->
-                    getFloat(name)
+            Float::class -> getFloat(name)
 
-                Double::class ->
-                    getDouble(name)
+            Double::class -> getDouble(name)
 
-                else -> {
-                    getString(name)?.let {
-                        runCatching { it.fromJson<Any>() }.getOrNull()
-                    }
+            else -> {
+                getString(name)?.let {
+                    runCatching { it.fromJson<Any>() }.getOrNull()
                 }
             }
         }
+    }
 
     return constructor.callBy(args)
 
@@ -103,35 +79,26 @@ inline fun <reified T : Any> Document.toObject(): T? {
 
 inline fun <reified T : Any> Dictionary.toObject(): T? {
 
-    val constructor =
-        T::class.primaryConstructor
-            ?: return null
+    val constructor = T::class.primaryConstructor ?: return null
 
     val args =
         constructor.parameters.associateWith { param ->
 
-            val name =
-                param.name ?: return@associateWith null
+            val name = param.name ?: return@associateWith null
 
             when (param.type.classifier) {
 
-                String::class ->
-                    getString(name)
+                String::class -> getString(name)
 
-                Int::class ->
-                    getInt(name)
+                Int::class -> getInt(name)
 
-                Boolean::class ->
-                    getBoolean(name)
+                Boolean::class -> getBoolean(name)
 
-                Long::class ->
-                    getLong(name)
+                Long::class -> getLong(name)
 
-                Float::class ->
-                    getFloat(name)
+                Float::class -> getFloat(name)
 
-                Double::class ->
-                    getDouble(name)
+                Double::class -> getDouble(name)
 
                 else ->
                     null

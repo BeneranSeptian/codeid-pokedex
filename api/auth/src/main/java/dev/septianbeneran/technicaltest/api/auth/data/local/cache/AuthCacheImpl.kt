@@ -54,4 +54,12 @@ class AuthCacheImpl @Inject constructor(
 
         return user?.password == hashString(password)
     }
+
+    override fun updatePassword(email: String, newPassword: String): Boolean {
+        return baseCouchbase.updateObjectFields(
+            collectionName = COLLECTION,
+            documentId = email,
+            updates = mapOf("password" to hashString(newPassword))
+        )
+    }
 }

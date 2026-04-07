@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_welcome">Welcome!</string>
+    <string name="login_welcome">Welcome Trainer!</string>
     <string name="login_email_label">Email</string>
     <string name="login_email_placeholder">Enter your email</string>
     <string name="login_password_label">Password</string>
     <string name="login_forgot_password">Forgot password?</string>
     <string name="login_button">Login</string>
-    <string name="login_not_a_member">Not a member? </string>
+    <string name="login_not_a_member">Not a trainer? </string>
     <string name="login_register_now">Register now</string>
 
     <string name="error_invalid_email">Invalid email format</string>

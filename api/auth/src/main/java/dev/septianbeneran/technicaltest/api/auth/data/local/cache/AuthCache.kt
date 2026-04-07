@@ -6,4 +6,5 @@ interface AuthCache {
     fun registerUser(user: User): Boolean
     fun findUserByEmail(email: String): User?
     fun loginUser(email: String, password: String): Boolean
+    fun updatePassword(email: String, newPassword: String): Boolean
 }

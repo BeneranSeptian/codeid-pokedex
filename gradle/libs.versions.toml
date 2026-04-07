@@ -24,8 +24,10 @@ retrofitKotlinxSerializationJson = "1.0.0"
 room = "2.8.4"
 datastore = "1.2.1"
 timber = "5.0.1"
+coil = "2.7.0"
 
 [libraries]
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 couchbase-lite-android = { module = "com.couchbase.lite:couchbase-lite-android", version.ref = "couchbaseLiteAndroid" }
 gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }

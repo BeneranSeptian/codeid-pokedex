@@ -70,4 +70,71 @@ class BaseCouchbase @Inject constructor(
         return list
     }
 
+    fun updateObjectFields(
+        collectionName: String,
+        documentId: String,
+        updates: Map<String, Any?>
+    ): Boolean {
+
+        val collection = couchbaseManager.getCollection(collectionName)
+
+        val existingDoc = collection.getDocument(documentId) ?: return false
+
+        val mutableDoc = existingDoc.toMutable()
+
+        updates.forEach { (key, value) ->
+
+            when (value) {
+
+                is String -> mutableDoc.setString(key, value)
+
+                is Int -> mutableDoc.setInt(key, value)
+
+                is Boolean -> mutableDoc.setBoolean(key, value)
+
+                is Long -> mutableDoc.setLong(key, value)
+
+                is Float -> mutableDoc.setFloat(key, value)
+
+                is Double -> mutableDoc.setDouble(key, value)
+
+                null -> mutableDoc.setValue(key, null)
+
+                else -> mutableDoc.setValue(key, value)
+            }
+
+        }
+
+        collection.save(mutableDoc)
+
+        return true
+    }
+
+    inline fun <reified T : Any> updateObject(
+        collectionName: String,
+        documentId: String,
+        value: T
+    ): Boolean {
+
+        val collection = couchbaseManager.getCollection(collectionName)
+        val existingDoc = collection.getDocument(documentId) ?: return false
+        val updatedDoc = value.toDocument(documentId)
+
+        collection.save(updatedDoc)
+
+        return true
+    }
+
+    fun deleteObject(
+        collectionName: String,
+        documentId: String
+    ): Boolean {
+        val collection = couchbaseManager.getCollection(collectionName)
+        val doc = collection.getDocument(documentId) ?: return false
+
+        collection.delete(doc)
+
+        return true
+    }
+
 }
