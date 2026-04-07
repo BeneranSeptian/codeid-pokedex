@@ -1,9 +1,8 @@
 plugins {
-    id("app.app-convention")
+    id("feature-convention")
 }
 
 dependencies {
     implementation(project(":core"))
     implementation(project(":api:auth"))
-    implementation(project(":feature:auth"))
 }

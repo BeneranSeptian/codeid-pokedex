@@ -12,7 +12,8 @@ plugins {
 
 pluginManager.withPlugin("com.android.application") {
     extensions.configure<ApplicationExtension> {
-        namespace = "${AppConfig.projectNameSpace}.${project.name.replace("-", ".")}"
+        val relativePath = project.path.removePrefix(":").replace(":", ".")
+        namespace = "${AppConfig.projectNameSpace}.${relativePath.replace("-", ".")}"
         compileSdk = AppConfig.compileSdk
 
         defaultConfig {
@@ -46,7 +47,8 @@ pluginManager.withPlugin("com.android.application") {
 
 pluginManager.withPlugin("com.android.library") {
     extensions.configure<LibraryExtension> {
-        namespace = "${AppConfig.projectNameSpace}.${project.name.replace("-", ".")}"
+        val relativePath = project.path.removePrefix(":").replace(":", ".")
+        namespace = "${AppConfig.projectNameSpace}.${relativePath.replace("-", ".")}"
         compileSdk = AppConfig.compileSdk
 
         defaultConfig {
