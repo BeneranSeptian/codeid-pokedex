@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_welcome">Welcome!</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_email_placeholder">Enter your email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_button">Login</string>
+    <string name="login_not_a_member">Not a member? </string>
+    <string name="login_register_now">Register now</string>
+
+    <string name="error_invalid_email">Invalid email format</string>
+    <string name="error_invalid_password">Password must be at least 6 characters</string>
+
+    <string name="register_title">Sign Up</string>
+    <string name="register_subtitle">Create an account to get started</string>
+    <string name="register_name_label">Name</string>
+    <string name="register_name_placeholder">Enter your name</string>
+    <string name="register_email_label">Email</string>
+    <string name="register_email_placeholder">Enter your email</string>
+    <string name="register_password_label">Password</string>
+    <string name="register_confirm_password_label">Confirm Password</string>
+    <string name="register_button">Sign Up</string>
+    <string name="register_already_have_account">Already have an account? </string>
+    <string name="register_login_now">Login now</string>
+    <string name="error_password_mismatch">Passwords do not match</string>
+    <string name="error_empty_name">Name cannot be empty</string>
+</resources>
