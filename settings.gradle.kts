@@ -23,7 +23,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Technical Test"
+rootProject.name = "Pokedex"
 include(":app")
 include(":core")
 include(":api-a")

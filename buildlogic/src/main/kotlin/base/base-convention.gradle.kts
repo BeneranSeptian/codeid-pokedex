@@ -20,6 +20,7 @@ pluginManager.withPlugin("com.android.application") {
             targetSdk = AppConfig.targetSdk
             versionCode = AppConfig.versionCode
             applicationId = AppConfig.projectNameSpace
+            resValue("string", "app_name", AppConfig.appName)
 
             testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         }

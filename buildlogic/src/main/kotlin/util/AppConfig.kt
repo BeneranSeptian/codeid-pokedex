@@ -3,6 +3,7 @@ package util
 import org.gradle.api.JavaVersion
 
 object AppConfig {
+    const val appName = "Pokedex"
     const val projectNameSpace = "dev.septianbeneran.technicaltest"
     const val compileSdk = 36
     const val minSdk = 24
