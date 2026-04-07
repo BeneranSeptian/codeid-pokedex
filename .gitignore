@@ -1,0 +1,18 @@
+*.iml
+.gradle
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# IntelliJ/Android Studio
+.idea/
+*.ipr
+*.iws
+
+# Build logic
+buildlogic/build/
+.kotlin/

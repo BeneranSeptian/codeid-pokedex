@@ -1,0 +1,11 @@
+package library
+import util.hiltDependencies
+
+plugins {
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+}
+
+dependencies {
+    hiltDependencies()
+}

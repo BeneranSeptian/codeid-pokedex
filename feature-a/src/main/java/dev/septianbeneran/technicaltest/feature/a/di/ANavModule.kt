@@ -1,0 +1,18 @@
+package dev.septianbeneran.technicaltest.feature.a.di
+
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
+import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
+import dev.septianbeneran.technicaltest.feature.a.navigation.ANavGraphImpl
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class ANavModule {
+
+    @Binds
+    @IntoSet
+    abstract fun bindANavGraphImpl(navGraph: ANavGraphImpl): BaseNavGraph
+}

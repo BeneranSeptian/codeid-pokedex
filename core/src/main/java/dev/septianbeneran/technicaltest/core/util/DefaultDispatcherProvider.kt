@@ -1,0 +1,3 @@
+package dev.septianbeneran.technicaltest.core.util
+
+class DefaultDispatcherProvider : CoroutineDispatcherProvider
