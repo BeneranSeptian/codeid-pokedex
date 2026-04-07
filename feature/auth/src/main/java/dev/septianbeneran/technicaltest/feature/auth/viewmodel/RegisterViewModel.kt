@@ -1,9 +1,12 @@
 package dev.septianbeneran.technicaltest.feature.auth.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.septianbeneran.technicaltest.api.auth.usecase.RegisterUserUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.entity.model.User
+import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.auth.R
@@ -25,10 +28,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUserUseCase: RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        val route = savedStateHandle.toRoute<RegisterRoute>()
+        route.email?.let { email ->
+            _uiState.update { it.copy(email = email) }
+        }
+    }
 
     fun onAction(action: RegisterAction) {
         when (action) {

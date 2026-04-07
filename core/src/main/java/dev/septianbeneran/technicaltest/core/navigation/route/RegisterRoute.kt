@@ -3,4 +3,6 @@ package dev.septianbeneran.technicaltest.core.navigation.route
 import kotlinx.serialization.Serializable
 
 @Serializable
-object RegisterRoute
+data class RegisterRoute(
+    val email: String? = null
+)

@@ -8,12 +8,14 @@ import androidx.navigation.toRoute
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
 import dev.septianbeneran.technicaltest.core.entity.model.Item
 import dev.septianbeneran.technicaltest.core.navigation.graph.AGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.ForgotPasswordRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.ItemDetailRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.ItemListRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.util.navtype.typeMapOf
+import dev.septianbeneran.technicaltest.feature.auth.screen.ForgotPasswordScreenRoute
 import dev.septianbeneran.technicaltest.feature.auth.screen.ItemDetailScreen
 import dev.septianbeneran.technicaltest.feature.auth.screen.ItemListRoute
 import dev.septianbeneran.technicaltest.feature.auth.screen.LoginScreenRoute
@@ -24,7 +26,7 @@ class ANavGraphImpl @Inject constructor(): BaseNavGraph {
     override fun NavGraphBuilder.createGraph(navigator: Navigator) {
 
         navigation<AGraphRoute>(
-            startDestination = LoginRoute
+            startDestination = LoginRoute()
         ) {
 
             composable<LoginRoute> {
@@ -33,6 +35,10 @@ class ANavGraphImpl @Inject constructor(): BaseNavGraph {
 
             composable<RegisterRoute> {
                 RegisterScreenRoute(navigator)
+            }
+
+            composable<ForgotPasswordRoute> {
+                ForgotPasswordScreenRoute(navigator)
             }
 
             composable<ItemListRoute> {

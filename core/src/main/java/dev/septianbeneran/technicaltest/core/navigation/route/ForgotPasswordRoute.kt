@@ -3,6 +3,4 @@ package dev.septianbeneran.technicaltest.core.navigation.route
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LoginRoute(
-    val email: String? = null
-)
+object ForgotPasswordRoute

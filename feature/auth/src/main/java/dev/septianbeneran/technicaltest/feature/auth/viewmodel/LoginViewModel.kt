@@ -1,9 +1,12 @@
 package dev.septianbeneran.technicaltest.feature.auth.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.septianbeneran.technicaltest.api.auth.usecase.LoginUserUseCase
 import dev.septianbeneran.technicaltest.feature.auth.R
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
+import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginAction
@@ -20,10 +23,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUserUseCase: LoginUserUseCase
+    private val loginUserUseCase: LoginUserUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
+
+    init {
+        val route = savedStateHandle.toRoute<LoginRoute>()
+        route.email?.let { email ->
+            _uiState.update { it.copy(email = email) }
+        }
+    }
 
     fun onAction(
         action: LoginAction

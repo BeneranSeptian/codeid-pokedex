@@ -28,7 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,6 +39,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.septianbeneran.technicaltest.feature.auth.R
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
+import dev.septianbeneran.technicaltest.core.navigation.route.ForgotPasswordRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.ItemListRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
@@ -84,17 +84,17 @@ fun LoginScreenRoute(
     ) { event ->
         when (event) {
             is NavigateToForgotPassword -> {
-                // TODO: Navigate to ForgotPassword screen
+                navigator.navigate(ForgotPasswordRoute)
             }
 
             is NavigateToRegister -> {
-                navigator.navigate(RegisterRoute)
+                navigator.navigate(RegisterRoute())
             }
 
             is NavigateToHome -> {
                 navigator.navigate(
                     route = ItemListRoute,
-                    popUpTo = LoginRoute,
+                    popUpTo = LoginRoute(),
                     inclusive = true
                 )
             }
