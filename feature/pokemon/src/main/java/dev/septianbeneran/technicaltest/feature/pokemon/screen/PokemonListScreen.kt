@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,11 +25,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +39,10 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
@@ -63,21 +63,7 @@ fun PokemonListScreenRoute(
 ) {
     val viewModel: PokemonListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
-    val listState = rememberLazyListState()
-
-    val shouldLoadMore = remember {
-        derivedStateOf {
-            val totalItemsCount = listState.layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            lastVisibleItemIndex >= totalItemsCount - 5
-        }
-    }
-
-    LaunchedEffect(shouldLoadMore.value) {
-        if (shouldLoadMore.value) {
-            viewModel.onAction(PokemonListAction.LoadNextPage)
-        }
-    }
+    val pokemonPagingItems = viewModel.pokemonPagingData.collectAsLazyPagingItems()
 
     BaseScreen(
         viewModel = viewModel,
@@ -104,37 +90,44 @@ fun PokemonListScreenRoute(
 
             Box(modifier = Modifier.weight(1f)) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    state = listState
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    itemsIndexed(uiState.filteredPokemonList) { index, pokemon ->
-                        PokemonItem(
-                            pokemon = pokemon,
-                            searchQuery = uiState.searchQuery,
-                            onClick = { viewModel.onAction(PokemonListAction.OnPokemonClick(pokemon)) }
-                        )
+                    items(
+                        count = pokemonPagingItems.itemCount,
+                        key = pokemonPagingItems.itemKey { it.name },
+                        contentType = pokemonPagingItems.itemContentType { "pokemon" }
+                    ) { index ->
+                        val pokemon = pokemonPagingItems[index]
+                        if (pokemon != null) {
+                            PokemonItem(
+                                pokemon = pokemon,
+                                searchQuery = uiState.searchQuery,
+                                onClick = { viewModel.onAction(PokemonListAction.OnPokemonClick(pokemon)) }
+                            )
+                        }
                     }
 
-                    if (uiState.isLoading) {
+                    when (val loadState = pokemonPagingItems.loadState.append) {
+                        is LoadState.Loading -> {
+                            item {
+                                LoadingItem()
+                            }
+                        }
+                        is LoadState.Error -> {
+                            item {
+                                ErrorItem(message = loadState.error.message ?: "Unknown error")
+                            }
+                        }
+                        else -> {}
+                    }
+
+                    if (pokemonPagingItems.loadState.refresh is LoadState.Loading) {
                         item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CircularProgressIndicator(modifier = Modifier.size(32.dp))
+                            Box(modifier = Modifier.fillParentMaxSize()) {
+                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                             }
                         }
                     }
-                }
-
-                uiState.error?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
                 }
             }
         }
@@ -148,6 +141,30 @@ fun PokemonListScreenRoute(
                 navigator.navigate(PokemonDetailRoute(pokemonId = event.id, pokemonName = event.name))
             }
         }
+    }
+}
+
+@Composable
+fun LoadingItem() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(modifier = Modifier.size(32.dp))
+    }
+}
+
+@Composable
+fun ErrorItem(message: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = message, color = MaterialTheme.colorScheme.error)
     }
 }
 

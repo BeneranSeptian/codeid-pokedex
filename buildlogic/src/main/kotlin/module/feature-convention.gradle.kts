@@ -4,4 +4,5 @@ plugins {
     id("library.compose-convention")
     id("library.hilt-convention")
     id("library.test-convention")
+    id("library.paging-convention")
 }

@@ -5,4 +5,5 @@ plugins {
     id("library.test-convention")
     id("library.networking-convention")
     id("library.localstorage-convention")
+    id("library.paging-convention")
 }
