@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -43,6 +44,7 @@ import coil.compose.AsyncImage
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.PokemonDetail
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.feature.pokemon.R
 import dev.septianbeneran.technicaltest.feature.pokemon.util.getPokemonOfficialArtWorkUrl
 import dev.septianbeneran.technicaltest.feature.pokemon.util.toPokemonTypeColor
 import dev.septianbeneran.technicaltest.feature.pokemon.viewmodel.PokemonDetailViewModel
@@ -85,7 +87,7 @@ fun PokemonDetailScreenRoute(
                     IconButton(onClick = { navigator.navigateUp() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -144,14 +146,14 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             InfoCard(
-                label = "Height",
+                label = stringResource(R.string.height),
                 value = "${pokemon.height / 10.0} m",
                 modifier = Modifier.weight(1f),
                 themeColor = themeColor
             )
             Spacer(modifier = Modifier.width(16.dp))
             InfoCard(
-                label = "Weight",
+                label = stringResource(R.string.weight),
                 value = "${pokemon.weight / 10.0} kg",
                 modifier = Modifier.weight(1f),
                 themeColor = themeColor
@@ -161,7 +163,7 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Types",
+            text = stringResource(R.string.types),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start)
@@ -188,7 +190,7 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Abilities",
+            text = stringResource(R.string.abilities),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start)
@@ -214,7 +216,7 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Base Stats",
+            text = stringResource(R.string.base_stats),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Start)

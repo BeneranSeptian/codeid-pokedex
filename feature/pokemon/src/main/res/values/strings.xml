@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search_pokemon">Search Pokemon</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="types">Types</string>
+    <string name="abilities">Abilities</string>
+    <string name="base_stats">Base Stats</string>
+    <string name="back">Back</string>
+</resources>
