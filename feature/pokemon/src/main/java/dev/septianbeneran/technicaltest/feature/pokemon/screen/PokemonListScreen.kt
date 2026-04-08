@@ -32,9 +32,14 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.AsyncImage
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
+import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListAction
+import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent
+import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent.NavigateToDetail
+import dev.septianbeneran.technicaltest.feature.pokemon.util.extractPokemonId
+import dev.septianbeneran.technicaltest.feature.pokemon.util.getPokemonImageUrl
 import dev.septianbeneran.technicaltest.feature.pokemon.viewmodel.PokemonListViewModel
 import java.util.Locale
 
@@ -64,7 +69,7 @@ fun PokemonListScreenRoute(
             LazyColumn(
                 modifier = Modifier.fillMaxSize()
             ) {
-                items(uiState.pokemons) { pokemon ->
+                items(uiState.pokemonList) { pokemon ->
                     PokemonItem(
                         pokemon = pokemon,
                         onClick = { viewModel.onAction(PokemonListAction.OnPokemonClick(pokemon)) }
@@ -77,7 +82,11 @@ fun PokemonListScreenRoute(
     EventObserver(
         event = viewModel.event
     ) { event ->
-
+        when (event) {
+            is NavigateToDetail -> {
+                navigator.navigate(PokemonDetailRoute(pokemonId = event.id, pokemonName = event.name))
+            }
+        }
     }
 }
 
@@ -86,9 +95,6 @@ fun PokemonItem(
     pokemon: Pokemon,
     onClick: () -> Unit
 ) {
-    val pokemonId = pokemon.url.split("/").filter { it.isNotEmpty() }.last()
-    val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$pokemonId.png"
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +119,7 @@ fun PokemonItem(
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = imageUrl,
+                    model = getPokemonImageUrl(pokemon.url),
                     contentDescription = pokemon.name,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit
@@ -124,7 +130,7 @@ fun PokemonItem(
 
             Column {
                 Text(
-                    text = "#${pokemonId.padStart(3, '0')}",
+                    text = "#${pokemon.url.extractPokemonId().toString().padStart(3, '0')}",
                     style = MaterialTheme.typography.labelMedium,
                     color = Color.Gray
                 )

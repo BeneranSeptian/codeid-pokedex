@@ -1,14 +1,15 @@
 package dev.septianbeneran.technicaltest.feature.pokemon.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.septianbeneran.technicaltest.api.pokemon.usecase.GetPokemonListUseCase
+import dev.septianbeneran.technicaltest.api.pokemon.usecase.GetPokemonDetailUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.entity.remote.ApiResult
-import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListAction
-import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent
-import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListUiState
-import dev.septianbeneran.technicaltest.feature.pokemon.util.extractPokemonId
+import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
+import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonDetailAction
+import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonDetailUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -17,33 +18,28 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class PokemonListViewModel @Inject constructor(
-    private val getPokemonListUseCase: GetPokemonListUseCase
+class PokemonDetailViewModel @Inject constructor(
+    private val getPokemonDetailUseCase: GetPokemonDetailUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val _uiState = MutableStateFlow(PokemonListUiState())
+    val route = savedStateHandle.toRoute<PokemonDetailRoute>()
+
+    private val _uiState = MutableStateFlow(PokemonDetailUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
-        onAction(PokemonListAction.GetPokemonList)
+        onAction(PokemonDetailAction.LoadPokemon(route.pokemonId.toString()))
     }
 
-    fun onAction(action: PokemonListAction) {
+    fun onAction(action: PokemonDetailAction) {
         when (action) {
-            is PokemonListAction.GetPokemonList -> getPokemonList()
-            is PokemonListAction.OnPokemonClick -> {
-                sendEvent(
-                    PokemonListEvent.NavigateToDetail(
-                        id = action.pokemon.url.extractPokemonId(),
-                        name = action.pokemon.name
-                    )
-                )
-            }
+            is PokemonDetailAction.LoadPokemon -> loadPokemon(action.nameOrId)
         }
     }
 
-    private fun getPokemonList() {
-        getPokemonListUseCase().onEach { result ->
+    private fun loadPokemon(nameOrId: String) {
+        getPokemonDetailUseCase(nameOrId).onEach { result ->
             when (result) {
                 is ApiResult.Loading -> {
                     _uiState.update { it.copy(isLoading = true, error = null) }
@@ -53,7 +49,7 @@ class PokemonListViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            pokemonList = result.data ?: emptyList()
+                            pokemon = result.data
                         )
                     }
                 }

@@ -13,7 +13,14 @@ class PokemonRepositoryImpl @Inject constructor(
     override fun getPokemonList() = resultFlow(
         networkCall = { remote.getPokemonList() },
         dispatcher = dispatcher
-    ).mapToEntity{
+    ).mapToEntity {
         it?.results?.map { pokemon -> pokemon.mapToEntity() }
+    }
+
+    override fun getPokemonDetail(nameOrId: String) = resultFlow(
+        networkCall = { remote.getPokemonDetail(nameOrId) },
+        dispatcher = dispatcher
+    ).mapToEntity {
+        it?.mapToEntity()
     }
 }

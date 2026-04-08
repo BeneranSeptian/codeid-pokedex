@@ -1,5 +1,6 @@
 package dev.septianbeneran.technicaltest.navigation
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +24,8 @@ import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
 import dev.septianbeneran.technicaltest.core.navigation.graph.PokemonGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.graph.ProfileGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.graph.SplashGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonListRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.profile.ProfileRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.navigation.util.isRoute
 import dev.septianbeneran.technicaltest.navigation.BottomNavItem.PokemonList
@@ -55,16 +58,17 @@ fun PokedexNavHost(
         Profile
     )
 
-    val showBottomBar = bottomNavItems.any { item ->
-        currentDestination
-            ?.hierarchy
-            ?.any {
-                it.hasRoute(item.route::class)
-            } == true
+    val bottomBarRoutes = setOf(
+        PokemonListRoute::class,
+        ProfileRoute::class
+    )
 
-    }
+    val showBottomBar = bottomBarRoutes.any {
+            currentDestination?.hasRoute(it) == true
+        }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar(

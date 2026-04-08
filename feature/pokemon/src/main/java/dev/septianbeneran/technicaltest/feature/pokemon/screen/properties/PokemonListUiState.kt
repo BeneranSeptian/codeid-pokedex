@@ -1,9 +1,10 @@
 package dev.septianbeneran.technicaltest.feature.pokemon.screen.properties
 
+import dev.septianbeneran.technicaltest.core.base.BaseEvent
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
 
 data class PokemonListUiState(
-    val pokemons: List<Pokemon> = emptyList(),
+    val pokemonList: List<Pokemon> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -11,4 +12,8 @@ data class PokemonListUiState(
 sealed interface PokemonListAction {
     data object GetPokemonList : PokemonListAction
     data class OnPokemonClick(val pokemon: Pokemon) : PokemonListAction
+}
+
+sealed interface PokemonListEvent: BaseEvent {
+    data class NavigateToDetail(val id: Int, val name: String) : PokemonListEvent
 }

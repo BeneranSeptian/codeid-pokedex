@@ -5,7 +5,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
 import dev.septianbeneran.technicaltest.core.navigation.graph.ProfileGraphRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.home.ProfileRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.profile.ProfileRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.feature.profile.screen.ProfileScreenRoute
 import javax.inject.Inject
