@@ -3,11 +3,11 @@ package dev.septianbeneran.technicaltest.core.ui.theme
 import androidx.compose.ui.graphics.Color
 
 object Highlight {
-    val Highlight500 = Color(0xFF006FFD)
-    val Highlight400 = Color(0xFF2897FF)
-    val Highlight300 = Color(0xFF6FBAFF)
-    val Highlight200 = Color(0xFFB4DBFF)
-    val Highlight100 = Color(0xFFEAF2FF)
+    val Highlight500 = Color(0xFFE3350D)
+    val Highlight400 = Color(0xFFEA5D3D)
+    val Highlight300 = Color(0xFFF1856E)
+    val Highlight200 = Color(0xFFF8AD9F)
+    val Highlight100 = Color(0xFFFFD5D0)
 }
 
 object Neutral {

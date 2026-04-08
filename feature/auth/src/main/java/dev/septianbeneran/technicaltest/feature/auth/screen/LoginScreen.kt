@@ -128,7 +128,7 @@ fun LoginScreen(
                 .fillMaxWidth()
                 .height(300.dp)
                 .background(
-                    color = Highlight.Highlight100,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                     shape = RoundedCornerShape(bottomStart = 64.dp, bottomEnd = 64.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -231,7 +231,7 @@ fun AuthSection(
             Text(
                 text = stringResource(R.string.login_forgot_password),
                 style = MaterialTheme.typography.labelMedium,
-                color = Highlight.Highlight500,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.clickable(onClick = onForgotPasswordClick)
             )
@@ -259,7 +259,7 @@ fun AuthSection(
             Text(
                 text = stringResource(R.string.login_register_now),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Highlight.Highlight500,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(start = 4.dp)

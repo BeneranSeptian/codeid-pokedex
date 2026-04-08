@@ -3,10 +3,8 @@ package dev.septianbeneran.technicaltest.feature.profile.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +20,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.navigation.graph.SplashGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.core.ui.component.PokeButton
 import dev.septianbeneran.technicaltest.feature.profile.R
 import dev.septianbeneran.technicaltest.feature.profile.screen.properties.ProfileAction
 import dev.septianbeneran.technicaltest.feature.profile.viewmodel.ProfileViewModel
@@ -51,7 +50,8 @@ fun ProfileScreenRoute(
             Text(
                 text = stringResource(id = R.string.profile_title),
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -59,23 +59,23 @@ fun ProfileScreenRoute(
             uiState.user?.let {
                 Text(
                     text = stringResource(id = R.string.profile_name_label, it.name),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(id = R.string.profile_email_label, it.email),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Button(
-                onClick = { viewModel.onAction(ProfileAction.Logout) },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = stringResource(id = R.string.profile_logout))
-            }
+            PokeButton(
+                text = stringResource(id = R.string.profile_logout),
+                onClick = { viewModel.onAction(ProfileAction.Logout) }
+            )
         }
     }
 }

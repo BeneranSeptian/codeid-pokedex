@@ -2,14 +2,18 @@ package dev.septianbeneran.technicaltest.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
@@ -63,7 +67,11 @@ fun PokedexNavHost(
     Scaffold(
         bottomBar = {
             if (showBottomBar) {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    tonalElevation = 8.dp
+                ) {
                     bottomNavItems.forEach { item ->
                         val isSelected = currentDestination
                                 ?.hierarchy
@@ -76,7 +84,10 @@ fun PokedexNavHost(
                                     navigator.navigate(
                                         route = item.route,
                                         popUpTo = currentTabRoute,
-                                        inclusive = false
+                                        inclusive = false,
+                                        saveState = true,
+                                        restoreState = true,
+                                        launchSingleTop = true
                                     )
                                 }
                             },
@@ -86,7 +97,14 @@ fun PokedexNavHost(
                                     contentDescription = item.label
                                 )
                             },
-                            label = { Text(text = item.label) }
+                            label = { Text(text = item.label) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                            )
                         )
                     }
                 }
