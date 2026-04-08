@@ -1,6 +1,7 @@
 package dev.septianbeneran.technicaltest.feature.pokemon.screen
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -31,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +53,7 @@ import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDet
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
+import dev.septianbeneran.technicaltest.core.R as CoreR
 import dev.septianbeneran.technicaltest.feature.pokemon.R
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListAction
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent.NavigateToDetail
@@ -112,12 +118,27 @@ fun PokemonListScreenRoute(
                                 LoadingItem()
                             }
                         }
+
                         is LoadState.Error -> {
                             item {
-                                ErrorItem(message = loadState.error.message ?: "Unknown error")
+                                ErrorItem(
+                                    message = loadState.error.message ?: "Unknown error",
+                                    onRetry = { pokemonPagingItems.retry() }
+                                )
                             }
                         }
+
                         else -> {}
+                    }
+
+                    if (pokemonPagingItems.loadState.refresh is LoadState.Error) {
+                        item {
+                            val error = pokemonPagingItems.loadState.refresh as LoadState.Error
+                            ErrorItem(
+                                message = error.error.message ?: "Unknown error",
+                                onRetry = { pokemonPagingItems.retry() }
+                            )
+                        }
                     }
 
                     if (pokemonPagingItems.loadState.refresh is LoadState.Loading) {
@@ -197,14 +218,45 @@ fun LoadingItem() {
 }
 
 @Composable
-fun ErrorItem(message: String) {
-    Box(
+fun ErrorItem(
+    message: String,
+    onRetry: () -> Unit
+) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        contentAlignment = Alignment.Center
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(text = message, color = MaterialTheme.colorScheme.error)
+        Text(
+            text = message,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = onRetry,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(R.string.retry),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
     }
 }
 
@@ -241,7 +293,9 @@ fun PokemonItem(
                     model = getPokemonImageUrl(pokemon.url),
                     contentDescription = pokemon.name,
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Fit
+                    contentScale = ContentScale.Fit,
+                    error = painterResource(id = CoreR.drawable.pokemon_silhouette),
+                    placeholder = painterResource(id = CoreR.drawable.pokemon_silhouette)
                 )
             }
 

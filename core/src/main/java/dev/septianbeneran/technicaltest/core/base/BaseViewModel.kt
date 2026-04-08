@@ -24,7 +24,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
     val event = _event.receiveAsFlow()
 
     open fun <T : Any> collectApi(
-        flow: Flow<ApiResult<T>>,
+        flow: Flow<ApiResult<T?>>,
         isCentralLoading: Boolean? = null,
         onError: ((ErrorResponse) -> Unit)? = null,
         onLoading: (() -> Unit)? = null,

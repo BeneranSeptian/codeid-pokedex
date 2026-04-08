@@ -7,4 +7,7 @@
     <string name="abilities">Abilities</string>
     <string name="base_stats">Base Stats</string>
     <string name="back">Back</string>
+    <string name="oops">Oops!</string>
+    <string name="retry">Retry</string>
+    <string name="pokemon_not_found">Pokemon not found</string>
 </resources>

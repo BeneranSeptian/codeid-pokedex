@@ -28,7 +28,7 @@ class PokemonPagingSource(
             if (!query.isNullOrEmpty()) {
                 val cachedList = local.loadPokemonList()
                 val filteredList = cachedList.filter { it.name.contains(query, ignoreCase = true) }
-                
+
                 val end = (offset + limit).coerceAtMost(filteredList.size)
                 val results = if (offset < filteredList.size) {
                     filteredList.subList(offset, end)
@@ -41,11 +41,11 @@ class PokemonPagingSource(
                 )
             } else {
                 val response = remote.getPokemonList(limit, offset)
-                
+
                 if (response is ApiResult.Success) {
                     val pokemonList = response.data?.results?.map { it.mapToEntity() } ?: emptyList()
                     local.updatePokemonList(pokemonList)
-                    
+
                     LoadResult.Page(
                         data = pokemonList,
                         prevKey = if (offset == 0) null else offset - limit,

@@ -3,6 +3,8 @@ package dev.septianbeneran.technicaltest.core.util
 import com.couchbase.lite.Dictionary
 import com.couchbase.lite.Document
 import com.couchbase.lite.MutableDocument
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
@@ -33,7 +35,8 @@ inline fun <reified T : Any> T.toDocument(
             null -> {}
 
             else -> {
-                doc.setString(name, value.toJson())
+                @Suppress("UNCHECKED_CAST")
+                doc.setString(name, json.encodeToString(serializer(prop.returnType) as KSerializer<Any>, value))
             }
         }
     }
@@ -67,7 +70,7 @@ inline fun <reified T : Any> Document.toObject(): T? {
 
             else -> {
                 getString(name)?.let {
-                    runCatching { it.fromJson<Any>() }.getOrNull()
+                    runCatching { json.decodeFromString(serializer(param.type), it) }.getOrNull()
                 }
             }
         }
@@ -101,7 +104,9 @@ inline fun <reified T : Any> Dictionary.toObject(): T? {
                 Double::class -> getDouble(name)
 
                 else ->
-                    null
+                    getString(name)?.let {
+                        runCatching { json.decodeFromString(serializer(param.type), it) }.getOrNull()
+                    }
             }
 
         }

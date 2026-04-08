@@ -3,7 +3,9 @@ package dev.septianbeneran.technicaltest.core.entity.model.pokemon
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.common.AbilitySlot
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.common.Stat
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.common.TypeSlot
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class PokemonDetail(
     val id: Int,
     val name: String,

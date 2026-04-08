@@ -18,6 +18,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +49,7 @@ import dev.septianbeneran.technicaltest.core.entity.model.pokemon.PokemonDetail
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
 import dev.septianbeneran.technicaltest.feature.pokemon.R
+import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonDetailAction
 import dev.septianbeneran.technicaltest.feature.pokemon.util.getPokemonOfficialArtWorkUrl
 import dev.septianbeneran.technicaltest.feature.pokemon.util.toPokemonTypeColor
 import dev.septianbeneran.technicaltest.feature.pokemon.viewmodel.PokemonDetailViewModel
@@ -100,12 +104,83 @@ fun PokemonDetailScreenRoute(
             )
         }
     ) {
-        if (uiState.isLoading) {
-            PokemonDetailSkeleton(themeColor = themeColor)
-        } else {
-            uiState.pokemon?.let { pokemon ->
-                PokemonDetailContent(pokemon = pokemon, themeColor = themeColor)
+        when {
+            uiState.isLoading -> {
+                PokemonDetailSkeleton(themeColor = themeColor)
             }
+
+            uiState.error != null || uiState.pokemon == null -> {
+                PokemonDetailErrorContent(
+                    message = uiState.error ?: stringResource(R.string.pokemon_not_found),
+                    onRetry = {
+                        viewModel.onAction(PokemonDetailAction.LoadPokemon(viewModel.route.pokemonId.toString()))
+                    }
+                )
+            }
+
+            else -> {
+                uiState.pokemon?.let { pokemon ->
+                    PokemonDetailContent(pokemon = pokemon, themeColor = themeColor)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PokemonDetailErrorContent(
+    message: String,
+    onRetry: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            painter = painterResource(id = CoreR.drawable.pokemon_silhouette),
+            contentDescription = null,
+            modifier = Modifier
+                .size(120.dp),
+            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = stringResource(R.string.oops),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = onRetry,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            ),
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = stringResource(R.string.retry))
         }
     }
 }
@@ -300,15 +375,34 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
                 .padding(top = 8.dp)
         ) {
             pokemon.abilities.forEach { abilitySlot ->
-                Text(
-                    text = abilitySlot.ability.name.replaceFirstChar { it.titlecase() },
+                Row(
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .background(themeColor.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
                         .padding(horizontal = 12.dp, vertical = 4.dp),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = abilitySlot.ability.name.replaceFirstChar { it.titlecase() },
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    if (abilitySlot.isHidden) {
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Box(
+                            modifier = Modifier
+                                .background(themeColor, RoundedCornerShape(4.dp))
+                                .padding(horizontal = 4.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "H",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                        }
+                    }
+                }
             }
         }
 

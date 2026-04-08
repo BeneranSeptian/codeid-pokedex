@@ -23,6 +23,7 @@ class PokemonRepositoryImpl @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = pageSize,
+                initialLoadSize = pageSize,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { PokemonPagingSource(remote, local, query) }
@@ -31,8 +32,9 @@ class PokemonRepositoryImpl @Inject constructor(
 
     override fun getPokemonDetail(nameOrId: String) = resultFlow(
         networkCall = { remote.getPokemonDetail(nameOrId) },
-        dispatcher = dispatcher
-    ).mapToEntity {
-        it?.mapToEntity()
-    }
+        dispatcher = dispatcher,
+        transform = { it?.mapToEntity() },
+        loadFromLocal = { local.loadPokemonDetail(nameOrId) },
+        saveToLocal = { it?.let { local.updatePokemonDetail(it) } }
+    )
 }
