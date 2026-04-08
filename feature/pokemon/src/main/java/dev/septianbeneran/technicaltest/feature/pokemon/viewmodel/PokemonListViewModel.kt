@@ -31,6 +31,11 @@ class PokemonListViewModel @Inject constructor(
     fun onAction(action: PokemonListAction) {
         when (action) {
             is PokemonListAction.GetPokemonList -> getPokemonList()
+            is PokemonListAction.LoadNextPage -> {
+                if (!_uiState.value.isLoading && !_uiState.value.isLastPage && _uiState.value.searchQuery.isEmpty()) {
+                    getPokemonList()
+                }
+            }
             is PokemonListAction.OnSearchQueryChange -> {
                 _uiState.update {
                     it.copy(
@@ -58,31 +63,36 @@ class PokemonListViewModel @Inject constructor(
     }
 
     private fun getPokemonList() {
-        getPokemonListUseCase().onEach { result ->
-            when (result) {
-                is ApiResult.Loading -> {
-                    _uiState.update { it.copy(isLoading = true, error = null) }
+        val currentOffset = _uiState.value.offset
+        val limit = 10
+        collectApi(
+            flow = getPokemonListUseCase(limit = limit, offset = currentOffset),
+            onLoading = {
+                _uiState.update { it.copy(isLoading = true, error = null) }
+            },
+            onSuccess = { data ->
+                val newList = data ?: emptyList()
+                _uiState.update {
+                    val currentListIds = it.pokemonList.map { p -> p.url.extractPokemonId() }.toSet()
+                    val uniqueNewList = newList.filter { p -> !currentListIds.contains(p.url.extractPokemonId()) }
+                    val updatedList = it.pokemonList + uniqueNewList
+                    it.copy(
+                        isLoading = false,
+                        pokemonList = updatedList,
+                        filteredPokemonList = if (it.searchQuery.isEmpty()) updatedList else it.pokemonList.filter { p -> p.name.contains(it.searchQuery, ignoreCase = true) },
+                        offset = currentOffset + limit,
+                        isLastPage = newList.size < limit
+                    )
                 }
-
-                is ApiResult.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            pokemonList = result.data ?: emptyList(),
-                            filteredPokemonList = result.data ?: emptyList()
-                        )
-                    }
-                }
-
-                is ApiResult.Error -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = result.error.message
-                        )
-                    }
+            },
+            onError = { error ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = error.message
+                    )
                 }
             }
-        }.launchIn(viewModelScope)
+        )
     }
 }

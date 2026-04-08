@@ -6,6 +6,6 @@ import dev.septianbeneran.technicaltest.api.pokemon.data.remote.dto.PokemonRespo
 import dev.septianbeneran.technicaltest.core.entity.remote.ApiResult
 
 interface PokemonApiRemoteDataSource {
-    suspend fun getPokemonList(): ApiResult<PokemonDto<List<PokemonResponse>>>
+    suspend fun getPokemonList(limit: Int, offset: Int): ApiResult<PokemonDto<List<PokemonResponse>>>
     suspend fun getPokemonDetail(nameOrId: String): ApiResult<PokemonDetailResponse>
 }

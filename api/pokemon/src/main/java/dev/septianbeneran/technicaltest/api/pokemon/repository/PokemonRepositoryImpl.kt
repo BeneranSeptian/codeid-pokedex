@@ -10,8 +10,8 @@ class PokemonRepositoryImpl @Inject constructor(
     private val remote: PokemonApiRemoteDataSource,
     private val dispatcher: CoroutineDispatcherProvider
 ) : PokemonRepository, BaseRepository() {
-    override fun getPokemonList() = resultFlow(
-        networkCall = { remote.getPokemonList() },
+    override fun getPokemonList(limit: Int, offset: Int) = resultFlow(
+        networkCall = { remote.getPokemonList(limit, offset) },
         dispatcher = dispatcher
     ).mapToEntity {
         it?.results?.map { pokemon -> pokemon.mapToEntity() }

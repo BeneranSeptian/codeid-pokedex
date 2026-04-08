@@ -39,30 +39,27 @@ class PokemonDetailViewModel @Inject constructor(
     }
 
     private fun loadPokemon(nameOrId: String) {
-        getPokemonDetailUseCase(nameOrId).onEach { result ->
-            when (result) {
-                is ApiResult.Loading -> {
-                    _uiState.update { it.copy(isLoading = true, error = null) }
+        collectApi(
+            flow = getPokemonDetailUseCase(nameOrId),
+            onLoading = {
+                _uiState.update { it.copy(isLoading = true, error = null) }
+            },
+            onSuccess = { pokemon ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        pokemon = pokemon
+                    )
                 }
-
-                is ApiResult.Success -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            pokemon = result.data
-                        )
-                    }
-                }
-
-                is ApiResult.Error -> {
-                    _uiState.update {
-                        it.copy(
-                            isLoading = false,
-                            error = result.error.message
-                        )
-                    }
+            },
+            onError = { error ->
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = error.message
+                    )
                 }
             }
-        }.launchIn(viewModelScope)
+        )
     }
 }

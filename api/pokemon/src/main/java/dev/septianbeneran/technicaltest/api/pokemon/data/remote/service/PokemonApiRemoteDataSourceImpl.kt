@@ -10,8 +10,8 @@ class PokemonApiRemoteDataSourceImpl @Inject constructor(
     private val api: PokemonApi
 ) : PokemonApiRemoteDataSource,
     BaseDataSource() {
-    override suspend fun getPokemonList() = getResult {
-        api.getPokemonList("pokemon")
+    override suspend fun getPokemonList(limit: Int, offset: Int) = getResult {
+        api.getPokemonList(limit, offset)
     }
 
     override suspend fun getPokemonDetail(nameOrId: String) = getResult {

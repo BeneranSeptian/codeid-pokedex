@@ -8,11 +8,14 @@ data class PokemonListUiState(
     val filteredPokemonList: List<Pokemon> = emptyList(),
     val searchQuery: String = "",
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val offset: Int = 0,
+    val isLastPage: Boolean = false
 )
 
 sealed interface PokemonListAction {
     data object GetPokemonList : PokemonListAction
+    data object LoadNextPage : PokemonListAction
     data class OnSearchQueryChange(val query: String) : PokemonListAction
     data class OnPokemonClick(val pokemon: Pokemon) : PokemonListAction
 }

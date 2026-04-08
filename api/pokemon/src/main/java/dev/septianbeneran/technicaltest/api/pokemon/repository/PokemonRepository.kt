@@ -6,6 +6,6 @@ import dev.septianbeneran.technicaltest.core.entity.remote.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
-    fun getPokemonList(): Flow<ApiResult<List<Pokemon>>>
+    fun getPokemonList(limit: Int, offset: Int): Flow<ApiResult<List<Pokemon>>>
     fun getPokemonDetail(nameOrId: String): Flow<ApiResult<PokemonDetail>>
 }

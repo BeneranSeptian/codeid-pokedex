@@ -6,11 +6,18 @@ import dev.septianbeneran.technicaltest.api.pokemon.data.remote.dto.PokemonRespo
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface PokemonApi {
-    @GET
+    @GET("pokemon")
     suspend fun getPokemonList(
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
+    ): Response<PokemonDto<List<PokemonResponse>>>
+
+    @GET
+    suspend fun getPokemonListByUrl(
         @Url url: String
     ): Response<PokemonDto<List<PokemonResponse>>>
 
