@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -33,9 +31,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -49,6 +47,7 @@ import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
 import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
+import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
 import dev.septianbeneran.technicaltest.feature.pokemon.R
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListAction
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent.NavigateToDetail
@@ -122,10 +121,8 @@ fun PokemonListScreenRoute(
                     }
 
                     if (pokemonPagingItems.loadState.refresh is LoadState.Loading) {
-                        item {
-                            Box(modifier = Modifier.fillParentMaxSize()) {
-                                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                            }
+                        items(10) {
+                            PokemonItemSkeleton()
                         }
                     }
                 }
@@ -145,15 +142,58 @@ fun PokemonListScreenRoute(
 }
 
 @Composable
-fun LoadingItem() {
-    Box(
+fun PokemonItemSkeleton() {
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        CircularProgressIndicator(modifier = Modifier.size(32.dp))
+        Row(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .shimmerEffect()
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column {
+                Box(
+                    modifier = Modifier
+                        .width(40.dp)
+                        .height(14.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .shimmerEffect()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .width(120.dp)
+                        .height(24.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .shimmerEffect()
+                )
+            }
+        }
     }
+}
+
+@Composable
+fun LoadingItem() {
+    PokemonItemSkeleton()
 }
 
 @Composable

@@ -44,6 +44,7 @@ import coil.compose.AsyncImage
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.PokemonDetail
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
 import dev.septianbeneran.technicaltest.feature.pokemon.R
 import dev.septianbeneran.technicaltest.feature.pokemon.util.getPokemonOfficialArtWorkUrl
 import dev.septianbeneran.technicaltest.feature.pokemon.util.toPokemonTypeColor
@@ -99,8 +100,106 @@ fun PokemonDetailScreenRoute(
             )
         }
     ) {
-        uiState.pokemon?.let { pokemon ->
-            PokemonDetailContent(pokemon = pokemon, themeColor = themeColor)
+        if (uiState.isLoading) {
+            PokemonDetailSkeleton(themeColor = themeColor)
+        } else {
+            uiState.pokemon?.let { pokemon ->
+                PokemonDetailContent(pokemon = pokemon, themeColor = themeColor)
+            }
+        }
+    }
+}
+
+@Composable
+fun PokemonDetailSkeleton(themeColor: Color) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(themeColor.copy(alpha = 0.5f))
+                .shimmerEffect()
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .shimmerEffect()
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .shimmerEffect()
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.Start)
+                .width(100.dp)
+                .height(20.dp)
+                .shimmerEffect()
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
+            repeat(2) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .width(80.dp)
+                        .height(30.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.Start)
+                .width(100.dp)
+                .height(20.dp)
+                .shimmerEffect()
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+        ) {
+            repeat(2) {
+                Box(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .width(100.dp)
+                        .height(30.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .shimmerEffect()
+                )
+            }
         }
     }
 }
