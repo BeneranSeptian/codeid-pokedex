@@ -9,13 +9,39 @@ class Navigator(
     fun navigate(
         route: Any,
         popUpTo: Any? = null,
-        inclusive: Boolean = false
+        inclusive: Boolean = false,
+        saveState: Boolean = false,
+        restoreState: Boolean = false,
+        launchSingleTop: Boolean = false
     ) {
         navController.navigate(route) {
             popUpTo?.let {
-                popUpTo(it) {
-                    this.inclusive = inclusive
+                when (it) {
+                    is Int -> {
+                        popUpTo(it) {
+                            this.inclusive = inclusive
+                            this.saveState = saveState
+                        }
+                    }
+
+                    else -> {
+                        popUpTo(it) {
+                            this.inclusive = inclusive
+                            this.saveState = saveState
+                        }
+                    }
                 }
+            }
+
+            this.launchSingleTop = launchSingleTop
+            this.restoreState = restoreState
+        }
+    }
+
+    fun clearBackStackAndNavigate(route: Any) {
+        navController.navigate(route) {
+            popUpTo(navController.graph.id) {
+                inclusive = true
             }
         }
     }

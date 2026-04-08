@@ -27,6 +27,7 @@ timber = "5.0.1"
 coil = "2.7.0"
 appcompat = "1.6.1"
 material = "1.10.0"
+junitKtx = "1.3.0"
 
 [libraries]
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
@@ -72,6 +73,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
