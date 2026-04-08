@@ -29,8 +29,7 @@ fun BaseScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = topBar,
-        bottomBar = bottomBar,
-        contentWindowInsets = WindowInsets(0.dp)
+        bottomBar = bottomBar
     ) { innerPadding ->
         Box(
             modifier = Modifier

@@ -83,7 +83,10 @@ fun PokemonDetailScreenRoute(
                 },
                 navigationIcon = {
                     IconButton(onClick = { navigator.navigateUp() }) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -140,9 +143,19 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            InfoCard(label = "Height", value = "${pokemon.height / 10.0} m", modifier = Modifier.weight(1f))
+            InfoCard(
+                label = "Height",
+                value = "${pokemon.height / 10.0} m",
+                modifier = Modifier.weight(1f),
+                themeColor = themeColor
+            )
             Spacer(modifier = Modifier.width(16.dp))
-            InfoCard(label = "Weight", value = "${pokemon.weight / 10.0} kg", modifier = Modifier.weight(1f))
+            InfoCard(
+                label = "Weight",
+                value = "${pokemon.weight / 10.0} kg",
+                modifier = Modifier.weight(1f),
+                themeColor = themeColor
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -190,7 +203,7 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
                     text = abilitySlot.ability.name.replaceFirstChar { it.titlecase() },
                     modifier = Modifier
                         .padding(end = 8.dp)
-                        .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(8.dp))
+                        .background(themeColor.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
                         .padding(horizontal = 12.dp, vertical = 4.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -214,15 +227,28 @@ fun PokemonDetailContent(pokemon: PokemonDetail, themeColor: Color) {
 }
 
 @Composable
-fun InfoCard(label: String, value: String, modifier: Modifier = Modifier) {
+fun InfoCard(
+    label: String,
+    value: String,
+    themeColor: Color,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
+            .background(themeColor.copy(alpha = 0.2f), RoundedCornerShape(12.dp))
             .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(text = value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 

@@ -7,17 +7,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -36,7 +42,6 @@ import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDet
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListAction
-import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonListEvent.NavigateToDetail
 import dev.septianbeneran.technicaltest.feature.pokemon.util.extractPokemonId
 import dev.septianbeneran.technicaltest.feature.pokemon.util.getPokemonImageUrl
@@ -53,27 +58,48 @@ fun PokemonListScreenRoute(
     BaseScreen(
         viewModel = viewModel,
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-
-            uiState.error?.let {
-                Text(
-                    text = it,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.align(Alignment.Center)
+        Column(modifier = Modifier.fillMaxSize()) {
+            OutlinedTextField(
+                value = uiState.searchQuery,
+                onValueChange = { viewModel.onAction(PokemonListAction.OnSearchQueryChange(it)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                placeholder = { Text("Search Pokemon") },
+                leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    disabledContainerColor = MaterialTheme.colorScheme.surface,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
                 )
-            }
+            )
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(uiState.pokemonList) { pokemon ->
-                    PokemonItem(
-                        pokemon = pokemon,
-                        onClick = { viewModel.onAction(PokemonListAction.OnPokemonClick(pokemon)) }
+            Box(modifier = Modifier.weight(1f)) {
+                if (uiState.isLoading) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+
+                uiState.error?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center)
                     )
+                }
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(uiState.filteredPokemonList) { pokemon ->
+                        PokemonItem(
+                            pokemon = pokemon,
+                            onClick = { viewModel.onAction(PokemonListAction.OnPokemonClick(pokemon)) }
+                        )
+                    }
                 }
             }
         }

@@ -31,6 +31,21 @@ class PokemonListViewModel @Inject constructor(
     fun onAction(action: PokemonListAction) {
         when (action) {
             is PokemonListAction.GetPokemonList -> getPokemonList()
+            is PokemonListAction.OnSearchQueryChange -> {
+                _uiState.update {
+                    it.copy(
+                        searchQuery = action.query,
+                        filteredPokemonList = if (action.query.isEmpty()) {
+                            it.pokemonList
+                        } else {
+                            it.pokemonList.filter { pokemon ->
+                                pokemon.name.contains(action.query, ignoreCase = true)
+                            }
+                        }
+                    )
+                }
+            }
+
             is PokemonListAction.OnPokemonClick -> {
                 sendEvent(
                     PokemonListEvent.NavigateToDetail(
@@ -53,7 +68,8 @@ class PokemonListViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            pokemonList = result.data ?: emptyList()
+                            pokemonList = result.data ?: emptyList(),
+                            filteredPokemonList = result.data ?: emptyList()
                         )
                     }
                 }
