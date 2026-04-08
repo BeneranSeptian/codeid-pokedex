@@ -15,8 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -51,6 +52,7 @@ import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
 import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.core.ui.component.PokeMediaPlaceholder
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
 import dev.septianbeneran.technicaltest.core.R as CoreR
@@ -112,6 +114,12 @@ fun PokemonListScreenRoute(
                         }
                     }
 
+                    if (pokemonPagingItems.loadState.refresh is LoadState.NotLoading && pokemonPagingItems.itemCount == 0) {
+                        item {
+                            EmptyState(query = uiState.searchQuery)
+                        }
+                    }
+
                     when (val loadState = pokemonPagingItems.loadState.append) {
                         is LoadState.Loading -> {
                             item {
@@ -159,6 +167,31 @@ fun PokemonListScreenRoute(
                 navigator.navigate(PokemonDetailRoute(pokemonId = event.id, pokemonName = event.name))
             }
         }
+    }
+}
+
+@Composable
+fun LazyItemScope.EmptyState(query: String) {
+    Column(
+        modifier = Modifier
+            .fillParentMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        PokeMediaPlaceholder()
+        Spacer(modifier = Modifier.height(16.dp))
+        val message = if (query.isEmpty()) {
+            stringResource(R.string.pokemon_not_found)
+        } else {
+            "No Pokemon found for \"$query\""
+        }
+        Text(
+            text = message,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.outline,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+        )
     }
 }
 

@@ -47,6 +47,7 @@ import coil.compose.AsyncImage
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.PokemonDetail
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.core.ui.component.PokeMediaPlaceholder
 import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
 import dev.septianbeneran.technicaltest.feature.pokemon.R
 import dev.septianbeneran.technicaltest.feature.pokemon.screen.properties.PokemonDetailAction
@@ -139,12 +140,9 @@ fun PokemonDetailErrorContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            painter = painterResource(id = CoreR.drawable.pokemon_silhouette),
-            contentDescription = null,
-            modifier = Modifier
-                .size(120.dp),
-            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+        PokeMediaPlaceholder(
+            modifier = Modifier.size(120.dp),
+            alpha = 1f
         )
 
         Spacer(modifier = Modifier.height(24.dp))
