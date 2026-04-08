@@ -10,7 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
-import dev.septianbeneran.technicaltest.core.navigation.graph.AuthGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.graph.SplashGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 
@@ -31,7 +31,7 @@ fun TechnicalTestNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = AuthGraphRoute,
+        startDestination = SplashGraphRoute,
         modifier = Modifier.padding(if (isLoginScreen) PaddingValues() else innerPadding)
     ) {
         navGraphs.forEach { graph ->

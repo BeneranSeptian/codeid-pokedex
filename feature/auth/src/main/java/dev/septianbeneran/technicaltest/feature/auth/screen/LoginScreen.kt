@@ -59,6 +59,7 @@ import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginEven
 import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginEvent.ShowToast
 import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginUiState
 import dev.septianbeneran.technicaltest.feature.auth.viewmodel.LoginViewModel
+import dev.septianbeneran.technicaltest.core.R as coreR
 
 @Composable
 fun LoginScreenRoute(
@@ -176,7 +177,7 @@ fun ImageSection(
     modifier: Modifier = Modifier
 ) {
     Image(
-        painter = painterResource(R.drawable.pokedex_logo),
+        painter = painterResource(coreR.drawable.pokedex_logo),
         contentDescription = null,
         modifier = modifier,
         contentScale = ContentScale.Fit

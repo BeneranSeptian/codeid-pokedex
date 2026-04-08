@@ -68,7 +68,7 @@ fun RegisterScreenRoute(
             NavigateToLogin -> navigator.navigateUp()
             NavigateToHome -> navigator.navigate(
                 route = ItemListRoute,
-                popUpTo = LoginRoute,
+                popUpTo = LoginRoute(),
                 inclusive = true
             )
 

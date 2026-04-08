@@ -28,6 +28,10 @@ class SessionCacheImpl @Inject constructor(
 
     override suspend fun logout() {
         baseDataStore.saveBoolean(IS_LOGGED_IN, false)
+    }
+
+    override suspend fun clear() {
+        baseDataStore.saveBoolean(IS_LOGGED_IN, false)
         baseDataStore.saveString(USER_EMAIL, "")
     }
 }

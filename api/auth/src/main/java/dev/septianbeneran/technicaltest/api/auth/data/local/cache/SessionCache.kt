@@ -7,4 +7,5 @@ interface SessionCache {
     fun loadLoggedInEmail(): Flow<String?>
     fun isLoggedIn(): Flow<Boolean>
     suspend fun logout()
+    suspend fun clear()
 }

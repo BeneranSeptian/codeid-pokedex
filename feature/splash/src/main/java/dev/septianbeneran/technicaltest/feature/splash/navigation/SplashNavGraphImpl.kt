@@ -7,6 +7,7 @@ import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
 import dev.septianbeneran.technicaltest.core.navigation.graph.SplashGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.splash.SplashRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import dev.septianbeneran.technicaltest.feature.splash.screen.SplashScreen
 import javax.inject.Inject
 
 class SplashNavGraphImpl @Inject constructor() : BaseNavGraph {
@@ -15,7 +16,7 @@ class SplashNavGraphImpl @Inject constructor() : BaseNavGraph {
             startDestination = SplashRoute
         ) {
             composable<SplashRoute> {
-
+                SplashScreen(navigator = navigator)
             }
         }
     }
