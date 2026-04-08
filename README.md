@@ -11,9 +11,19 @@ A modern, clean, and robust Pokedex application built with Jetpack Compose, foll
 - **Modern UI**: Fully built with Jetpack Compose, featuring smooth animations and shimmer loading states.
 
 ## 📸 Preview
-| Login Screen | Pokemon List | Pokemon Detail | Profile Screen |
+
+### Authentication
+
+| Login | Register | Forgot Password | Profile |
 | :---: | :---: | :---: | :---: |
-| ![Login](path_to_screenshot) | ![List](path_to_screenshot) | ![Detail](path_to_screenshot) | ![Profile](path_to_screenshot) |
+| <img height="600" alt="image" src="https://github.com/user-attachments/assets/58ab55fd-8ae4-4440-91cf-9b91bdef1786"/> | <img height="600" alt="image" src="https://github.com/user-attachments/assets/96eed5d9-2f81-4f46-a62b-a57bbf1b5a0e" /> |<img height="600" alt="image" src="https://github.com/user-attachments/assets/7a5f6c2a-b168-4989-9063-5b867cf2a6c9" />|  <img height="600" alt="image" src="https://github.com/user-attachments/assets/e73ba271-2b3f-49fc-858e-a61c7aed1507" /> |
+
+### Pokemon
+
+| List | Search | Detail |
+| :---: | :---: | :---: |
+| <img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/5ef40fcb-18c7-4982-a73c-d78e19b482dc" /> |<img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/ed616863-7f84-4f62-8e10-28bd8f2405ef" />|<img width="1080" height="2400" alt="image" src="https://github.com/user-attachments/assets/7862c9dc-c3f1-4432-8589-e20794bfff45" />
+|
 
 ## 🛠 Tech Stack & Libraries
 - **Language**: [Kotlin](https://kotlinlang.org/)
@@ -40,6 +50,3 @@ The project follows a modularized approach to ensure scalability and maintainabi
 1. Clone this repository.
 2. Open the project in Android Studio (Ladybug or newer recommended).
 3. Sync Gradle and run the `:app` module.
-
----
-Developed as a technical test showcasing modern Android development practices at code.id
