@@ -4,7 +4,9 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.septianbeneran.technicaltest.core.interceptor.ConnectivityInterceptor
 import dev.septianbeneran.technicaltest.core.interceptor.LogcatInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -27,10 +29,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        @ApplicationContext context: android.content.Context
+    ): OkHttpClient {
         return OkHttpClient
             .Builder()
             .addInterceptor(LogcatInterceptor())
+            .addInterceptor(ConnectivityInterceptor(context))
             .build()
     }
 
