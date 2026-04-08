@@ -58,7 +58,8 @@ fun ForgotPasswordScreenRoute(
 
     BaseScreen(
         viewModel = viewModel,
-        contentPadding = PaddingValues(0.dp)
+        contentPadding = PaddingValues(0.dp),
+        contentWindowInsets = WindowInsets(0.dp)
     ) {
         ForgotPasswordScreen(
             uiState = uiState,

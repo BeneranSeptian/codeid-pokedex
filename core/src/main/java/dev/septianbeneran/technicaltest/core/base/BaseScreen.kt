@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ fun BaseScreen(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     content: @Composable () -> Unit
 ) {
     val uiState = viewModel.baseScreenUiState.collectAsStateWithLifecycle()
@@ -29,7 +31,8 @@ fun BaseScreen(
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = topBar,
-        bottomBar = bottomBar
+        bottomBar = bottomBar,
+        contentWindowInsets = contentWindowInsets
     ) { innerPadding ->
         Box(
             modifier = Modifier

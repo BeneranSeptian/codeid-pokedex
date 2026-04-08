@@ -21,7 +21,7 @@ import dev.septianbeneran.technicaltest.core.R as coreR
 
 @Composable
 fun SplashScreen(
-    navigator: Navigator,
+    navigator: Navigator
 ) {
     val viewModel: SplashViewModel = hiltViewModel()
 
