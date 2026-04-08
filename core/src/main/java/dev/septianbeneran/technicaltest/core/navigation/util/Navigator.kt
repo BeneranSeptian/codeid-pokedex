@@ -9,17 +9,14 @@ class Navigator(
     fun navigate(
         route: Any,
         popUpTo: Any? = null,
-        inclusive: Boolean = false,
-        launchSingleTop: Boolean = false
+        inclusive: Boolean = false
     ) {
         navController.navigate(route) {
             popUpTo?.let {
-                this.popUpTo(it) {
+                popUpTo(it) {
                     this.inclusive = inclusive
                 }
             }
-
-            this.launchSingleTop = launchSingleTop
         }
     }
 

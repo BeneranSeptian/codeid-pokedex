@@ -4,14 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
-import dev.septianbeneran.technicaltest.navigation.TechnicalTestNavGraph
+import dev.septianbeneran.technicaltest.navigation.PokedexNavHost
 import dev.septianbeneran.technicaltest.ui.theme.TechnicalTestTheme
 import javax.inject.Inject
 
@@ -26,9 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             TechnicalTestTheme {
                 val navController = rememberNavController()
-                TechnicalTestNavGraph(
+                PokedexNavHost(
                     navController = navController,
-                    innerPadding = PaddingValues(),
                     navGraphs = navGraphs
                 )
             }

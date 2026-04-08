@@ -39,8 +39,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.septianbeneran.technicaltest.feature.auth.R
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
+import dev.septianbeneran.technicaltest.core.navigation.graph.HomeGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.graph.PokemonGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.ForgotPasswordRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.auth.ItemListRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.RegisterRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeButton
@@ -94,7 +95,7 @@ fun LoginScreenRoute(
 
             is NavigateToHome -> {
                 navigator.navigate(
-                    route = ItemListRoute,
+                    route = PokemonGraphRoute,
                     popUpTo = LoginRoute(),
                     inclusive = true
                 )

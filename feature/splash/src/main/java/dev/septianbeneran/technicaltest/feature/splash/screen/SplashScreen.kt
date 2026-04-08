@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import dev.septianbeneran.technicaltest.core.navigation.route.auth.ItemListRoute
+import dev.septianbeneran.technicaltest.core.navigation.graph.PokemonGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.splash.SplashRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
@@ -40,7 +40,7 @@ fun SplashScreen(
             }
             is SplashEvent.NavigateToHome -> {
                 navigator.navigate(
-                    route = ItemListRoute,
+                    route = PokemonGraphRoute,
                     popUpTo = SplashRoute,
                     inclusive = true
                 )
