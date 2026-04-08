@@ -1,7 +1,7 @@
 package dev.septianbeneran.technicaltest.api.auth.usecase
 
 import dev.septianbeneran.technicaltest.api.auth.repository.AuthRepository
-import dev.septianbeneran.technicaltest.core.entity.model.User
+import dev.septianbeneran.technicaltest.core.entity.model.auth.User
 import javax.inject.Inject
 
 class RegisterUserUseCase @Inject constructor(

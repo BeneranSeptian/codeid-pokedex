@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -39,7 +40,14 @@ class ProfileViewModel @Inject constructor(
             val email = sessionCache.loadLoggedInEmail().first()
             if (email != null) {
                 val user = authCache.findUserByEmail(email)
-                _uiState.update { it.copy(user = user) }
+                val randomPokemonId = Random.nextInt(1, 1010)
+                val profilePictureUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$randomPokemonId.png"
+                _uiState.update { 
+                    it.copy(
+                        user = user,
+                        profilePictureUrl = profilePictureUrl
+                    ) 
+                }
             }
         }
     }

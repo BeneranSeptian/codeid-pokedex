@@ -6,7 +6,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.septianbeneran.technicaltest.api.auth.usecase.RegisterUserUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
-import dev.septianbeneran.technicaltest.core.entity.model.User
+import dev.septianbeneran.technicaltest.core.entity.model.auth.User
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.RegisterRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword

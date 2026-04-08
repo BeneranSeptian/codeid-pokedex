@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":api:auth"))
+    implementation(project(":api:pokemon"))
 }

@@ -1,7 +1,7 @@
 package dev.septianbeneran.technicaltest.api.auth.data.local.cache
 
 import dev.septianbeneran.technicaltest.core.base.BaseCouchbase
-import dev.septianbeneran.technicaltest.core.entity.model.User
+import dev.septianbeneran.technicaltest.core.entity.model.auth.User
 import dev.septianbeneran.technicaltest.core.util.HashUtil.hashString
 import javax.inject.Inject
 
