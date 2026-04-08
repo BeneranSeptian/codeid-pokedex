@@ -1,12 +1,13 @@
 package dev.septianbeneran.technicaltest.feature.auth.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.septianbeneran.technicaltest.api.auth.usecase.RegisterUserUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.entity.model.User
-import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.RegisterRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.auth.R
@@ -24,6 +25,7 @@ import dev.septianbeneran.technicaltest.feature.auth.screen.properties.RegisterU
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -96,11 +98,13 @@ class RegisterViewModel @Inject constructor(
                 )
 
                 if (uiState.value.isRegisterEnabled) {
-                    val isSuccess = registerUserUseCase(user)
-                    if (isSuccess) {
-                        sendEvent(NavigateToHome)
-                    } else {
-                        sendEvent(ShowToast(R.string.error_email_already_registered))
+                    viewModelScope.launch {
+                        val isSuccess = registerUserUseCase(user)
+                        if (isSuccess) {
+                            sendEvent(NavigateToHome)
+                        } else {
+                            sendEvent(ShowToast(R.string.error_email_already_registered))
+                        }
                     }
                 }
             }

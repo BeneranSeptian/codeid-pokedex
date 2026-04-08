@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.septianbeneran.technicaltest.core.base.BaseScreen
-import dev.septianbeneran.technicaltest.core.navigation.route.ForgotPasswordRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.ForgotPasswordRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.RegisterRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.ui.component.PokeButton
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextField

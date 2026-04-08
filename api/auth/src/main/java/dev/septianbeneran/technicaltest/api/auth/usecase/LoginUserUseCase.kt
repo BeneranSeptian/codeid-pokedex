@@ -1,10 +1,10 @@
 package dev.septianbeneran.technicaltest.api.auth.usecase
 
-import dev.septianbeneran.technicaltest.api.auth.repository.JsonBinRepository
+import dev.septianbeneran.technicaltest.api.auth.repository.AuthRepository
 import javax.inject.Inject
 
 class LoginUserUseCase @Inject constructor(
-    private val repository: JsonBinRepository
+    private val repository: AuthRepository
 ) {
-    operator fun invoke(email: String, password: String) = repository.authCache.loginUser(email, password)
+    suspend operator fun invoke(email: String, password: String) = repository.loginUser(email, password)
 }

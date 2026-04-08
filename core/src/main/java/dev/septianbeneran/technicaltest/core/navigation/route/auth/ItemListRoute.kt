@@ -1,4 +1,4 @@
-package dev.septianbeneran.technicaltest.core.navigation.route
+package dev.septianbeneran.technicaltest.core.navigation.route.auth
 
 import kotlinx.serialization.Serializable
 

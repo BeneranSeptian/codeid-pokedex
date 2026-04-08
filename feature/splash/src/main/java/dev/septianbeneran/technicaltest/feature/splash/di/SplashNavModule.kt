@@ -1,4 +1,4 @@
-package dev.septianbeneran.technicaltest.feature.auth.di
+package dev.septianbeneran.technicaltest.feature.splash.di
 
 import dagger.Binds
 import dagger.Module
@@ -6,13 +6,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dagger.multibindings.IntoSet
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
-import dev.septianbeneran.technicaltest.feature.auth.navigation.ANavGraphImpl
+import dev.septianbeneran.technicaltest.feature.splash.navigation.SplashNavGraphImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ANavModule {
+abstract class SplashNavModule {
 
     @Binds
     @IntoSet
-    abstract fun bindANavGraphImpl(navGraph: ANavGraphImpl): BaseNavGraph
+    abstract fun bindSplashNavGraphImpl(navGraph: SplashNavGraphImpl): BaseNavGraph
 }

@@ -22,8 +22,7 @@ class BaseCouchbase @Inject constructor(
 
         val collection = couchbaseManager.getCollection(collectionName)
 
-        val doc =
-            value.toDocument(documentId)
+        val doc = value.toDocument(documentId)
 
         collection.save(doc)
 

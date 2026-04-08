@@ -1,11 +1,11 @@
 package dev.septianbeneran.technicaltest.api.auth.usecase
 
-import dev.septianbeneran.technicaltest.api.auth.repository.JsonBinRepository
+import dev.septianbeneran.technicaltest.api.auth.repository.AuthRepository
 import dev.septianbeneran.technicaltest.core.util.HashUtil.hashString
 import javax.inject.Inject
 
 class UpdatePasswordUseCase @Inject constructor(
-    private val repository: JsonBinRepository
+    private val repository: AuthRepository
 ) {
     operator fun invoke(email: String, newPassword: String): Result {
         val user = repository.authCache.findUserByEmail(email) ?: return Result.EmailNotRegistered

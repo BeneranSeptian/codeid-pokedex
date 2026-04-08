@@ -7,12 +7,12 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
 import dev.septianbeneran.technicaltest.core.entity.model.Item
-import dev.septianbeneran.technicaltest.core.navigation.graph.AGraphRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.ForgotPasswordRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.ItemDetailRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.ItemListRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.RegisterRoute
+import dev.septianbeneran.technicaltest.core.navigation.graph.AuthGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.ForgotPasswordRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.ItemDetailRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.ItemListRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.RegisterRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 import dev.septianbeneran.technicaltest.core.util.navtype.typeMapOf
 import dev.septianbeneran.technicaltest.feature.auth.screen.ForgotPasswordScreenRoute
@@ -22,10 +22,10 @@ import dev.septianbeneran.technicaltest.feature.auth.screen.LoginScreenRoute
 import dev.septianbeneran.technicaltest.feature.auth.screen.RegisterScreenRoute
 import javax.inject.Inject
 
-class ANavGraphImpl @Inject constructor(): BaseNavGraph {
+class AuthNavGraphImpl @Inject constructor(): BaseNavGraph {
     override fun NavGraphBuilder.createGraph(navigator: Navigator) {
 
-        navigation<AGraphRoute>(
+        navigation<AuthGraphRoute>(
             startDestination = LoginRoute()
         ) {
 

@@ -9,10 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import dev.septianbeneran.technicaltest.core.base.BaseNavGraph
-import dev.septianbeneran.technicaltest.core.navigation.graph.AGraphRoute
-import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
+import dev.septianbeneran.technicaltest.core.navigation.graph.AuthGraphRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
 
 @Composable
@@ -32,7 +31,7 @@ fun TechnicalTestNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = AGraphRoute,
+        startDestination = AuthGraphRoute,
         modifier = Modifier.padding(if (isLoginScreen) PaddingValues() else innerPadding)
     ) {
         navGraphs.forEach { graph ->

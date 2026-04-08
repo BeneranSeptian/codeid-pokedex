@@ -1,12 +1,13 @@
 package dev.septianbeneran.technicaltest.feature.auth.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.septianbeneran.technicaltest.api.auth.usecase.LoginUserUseCase
 import dev.septianbeneran.technicaltest.feature.auth.R
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
-import dev.septianbeneran.technicaltest.core.navigation.route.LoginRoute
+import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validateEmail
 import dev.septianbeneran.technicaltest.core.ui.component.PokeTextFieldValidator.validatePassword
 import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginAction
@@ -19,6 +20,7 @@ import dev.septianbeneran.technicaltest.feature.auth.screen.properties.LoginUiSt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,11 +65,13 @@ class LoginViewModel @Inject constructor(
             }
 
             is OnLoginClick -> {
-                val isSuccess = loginUserUseCase(action.email, action.password)
-                if (isSuccess) {
-                    sendEvent(NavigateToHome)
-                } else {
-                    sendEvent(ShowToast(R.string.error_invalid_credentials))
+                viewModelScope.launch {
+                    val isSuccess = loginUserUseCase(action.email, action.password)
+                    if (isSuccess) {
+                        sendEvent(NavigateToHome)
+                    } else {
+                        sendEvent(ShowToast(R.string.error_invalid_credentials))
+                    }
                 }
             }
         }

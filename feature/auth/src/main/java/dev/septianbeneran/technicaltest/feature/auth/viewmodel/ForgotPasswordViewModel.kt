@@ -95,7 +95,7 @@ class ForgotPasswordViewModel @Inject constructor(
                 }
             }
 
-            OnDismissDialog -> { _uiState.update { it.copy(dialogState = null) } }
+            is OnDismissDialog -> { _uiState.update { it.copy(dialogState = null) } }
 
             is OnNavigateToRegister -> {
                 _uiState.update { it.copy(dialogState = null) }
