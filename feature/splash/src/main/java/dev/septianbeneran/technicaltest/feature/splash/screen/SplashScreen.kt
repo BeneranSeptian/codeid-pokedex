@@ -1,7 +1,6 @@
 package dev.septianbeneran.technicaltest.feature.splash.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -15,7 +14,6 @@ import dev.septianbeneran.technicaltest.core.navigation.graph.PokemonGraphRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.auth.LoginRoute
 import dev.septianbeneran.technicaltest.core.navigation.route.splash.SplashRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
-import dev.septianbeneran.technicaltest.core.ui.theme.Highlight
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.feature.splash.screen.properties.SplashEvent
 import dev.septianbeneran.technicaltest.feature.splash.viewmodel.SplashViewModel
@@ -49,9 +47,7 @@ fun SplashScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Highlight.Highlight100),
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Image(

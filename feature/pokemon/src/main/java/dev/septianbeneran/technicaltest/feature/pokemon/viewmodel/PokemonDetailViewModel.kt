@@ -3,7 +3,6 @@ package dev.septianbeneran.technicaltest.feature.pokemon.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.septianbeneran.technicaltest.api.pokemon.data.local.PokemonCache
 import dev.septianbeneran.technicaltest.api.pokemon.usecase.GetPokemonDetailUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
