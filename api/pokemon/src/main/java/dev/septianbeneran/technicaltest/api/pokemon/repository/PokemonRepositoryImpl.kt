@@ -1,5 +1,6 @@
 package dev.septianbeneran.technicaltest.api.pokemon.repository
 
+import dev.septianbeneran.technicaltest.api.pokemon.data.local.PokemonCache
 import dev.septianbeneran.technicaltest.api.pokemon.data.remote.service.PokemonApiRemoteDataSource
 import dev.septianbeneran.technicaltest.core.base.BaseRepository
 import dev.septianbeneran.technicaltest.core.util.CoroutineDispatcherProvider
@@ -8,6 +9,7 @@ import javax.inject.Inject
 
 class PokemonRepositoryImpl @Inject constructor(
     private val remote: PokemonApiRemoteDataSource,
+    private val local: PokemonCache,
     private val dispatcher: CoroutineDispatcherProvider
 ) : PokemonRepository, BaseRepository() {
     override fun getPokemonList(limit: Int, offset: Int) = resultFlow(

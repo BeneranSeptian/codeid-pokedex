@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.septianbeneran.technicaltest.api.pokemon.data.local.PokemonCache
+import dev.septianbeneran.technicaltest.api.pokemon.data.local.PokemonCacheImpl
 import dev.septianbeneran.technicaltest.api.pokemon.data.remote.api.PokemonApi
 import dev.septianbeneran.technicaltest.api.pokemon.data.remote.service.PokemonApiRemoteDataSource
 import dev.septianbeneran.technicaltest.api.pokemon.data.remote.service.PokemonApiRemoteDataSourceImpl
@@ -37,5 +39,11 @@ abstract class PokemonApiModule {
     abstract fun bindPokemonRepository(
         pokemonRepositoryImpl: PokemonRepositoryImpl
     ): PokemonRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPokemonCache(
+        pokemonCacheImpl: PokemonCacheImpl
+    ): PokemonCache
 
 }
