@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.septianbeneran.technicaltest.api.pokemon.usecase.GetPokemonDetailUseCase
 import dev.septianbeneran.technicaltest.api.pokemon.usecase.GetPokemonListUseCase
 import dev.septianbeneran.technicaltest.core.base.BaseViewModel
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
@@ -25,7 +26,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
-    private val getPokemonListUseCase: GetPokemonListUseCase
+    private val getPokemonListUseCase: GetPokemonListUseCase,
+    private val getPokemonDetailUseCase: GetPokemonDetailUseCase
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(PokemonListUiState())
@@ -55,6 +57,35 @@ class PokemonListViewModel @Inject constructor(
                         name = action.pokemon.name
                     )
                 )
+            }
+
+            is PokemonListAction.OnSearchDetailClick -> {
+                val query = _uiState.value.searchQuery
+                if (query.isNotEmpty()) {
+                    collectApi(
+                        flow = getPokemonDetailUseCase(query),
+                        isCentralLoading = true,
+                        onSuccess = { pokemon ->
+                            if (pokemon != null) {
+                                sendEvent(
+                                    PokemonListEvent.NavigateToDetail(
+                                        id = pokemon.id,
+                                        name = pokemon.name
+                                    )
+                                )
+                            } else {
+                                _uiState.update { it.copy(searchDetailError = "Pokemon not found") }
+                            }
+                        },
+                        onError = { error ->
+                            _uiState.update { it.copy(searchDetailError = error.message) }
+                        }
+                    )
+                }
+            }
+
+            is PokemonListAction.DismissSearchDetailError -> {
+                _uiState.update { it.copy(searchDetailError = null) }
             }
         }
     }

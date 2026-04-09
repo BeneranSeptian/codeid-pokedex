@@ -26,7 +26,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,6 +53,7 @@ import dev.septianbeneran.technicaltest.core.base.BaseScreen
 import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
 import dev.septianbeneran.technicaltest.core.navigation.route.pokemon.PokemonDetailRoute
 import dev.septianbeneran.technicaltest.core.navigation.util.Navigator
+import androidx.compose.material3.TextFieldDefaults
 import dev.septianbeneran.technicaltest.core.ui.component.PokeMediaPlaceholder
 import dev.septianbeneran.technicaltest.core.ui.util.EventObserver
 import dev.septianbeneran.technicaltest.core.ui.util.shimmerEffect
@@ -71,6 +73,19 @@ fun PokemonListScreenRoute(
     val viewModel: PokemonListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val pokemonPagingItems = viewModel.pokemonPagingData.collectAsLazyPagingItems()
+
+    uiState.searchDetailError?.let { error ->
+        AlertDialog(
+            onDismissRequest = { viewModel.onAction(PokemonListAction.DismissSearchDetailError) },
+            confirmButton = {
+                TextButton(onClick = { viewModel.onAction(PokemonListAction.DismissSearchDetailError) }) {
+                    Text("OK")
+                }
+            },
+            title = { Text(stringResource(R.string.oops)) },
+            text = { Text(error) }
+        )
+    }
 
     BaseScreen(
         viewModel = viewModel,
@@ -116,7 +131,10 @@ fun PokemonListScreenRoute(
 
                     if (pokemonPagingItems.loadState.refresh is LoadState.NotLoading && pokemonPagingItems.itemCount == 0) {
                         item {
-                            EmptyState(query = uiState.searchQuery)
+                            EmptyState(
+                                query = uiState.searchQuery,
+                                onSearchDetail = { viewModel.onAction(PokemonListAction.OnSearchDetailClick) }
+                            )
                         }
                     }
 
@@ -171,7 +189,10 @@ fun PokemonListScreenRoute(
 }
 
 @Composable
-fun LazyItemScope.EmptyState(query: String) {
+fun LazyItemScope.EmptyState(
+    query: String,
+    onSearchDetail: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillParentMaxSize()
@@ -192,6 +213,18 @@ fun LazyItemScope.EmptyState(query: String) {
             color = MaterialTheme.colorScheme.outline,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
+
+        if (query.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(
+                onClick = onSearchDetail,
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Search Detail")
+            }
+        }
     }
 }
 

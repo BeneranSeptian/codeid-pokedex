@@ -5,12 +5,15 @@ import dev.septianbeneran.technicaltest.core.entity.model.pokemon.Pokemon
 
 data class PokemonListUiState(
     val searchQuery: String = "",
-    val error: String? = null
+    val error: String? = null,
+    val searchDetailError: String? = null
 )
 
 sealed interface PokemonListAction {
     data class OnSearchQueryChange(val query: String) : PokemonListAction
     data class OnPokemonClick(val pokemon: Pokemon) : PokemonListAction
+    data object OnSearchDetailClick : PokemonListAction
+    data object DismissSearchDetailError : PokemonListAction
 }
 
 sealed interface PokemonListEvent: BaseEvent {
